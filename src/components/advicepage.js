@@ -20,8 +20,6 @@ const AdvicePage = () => {
         setShowAdviceAdd(true)
     }
 
-    const q = query(collection(database, "All advice"))
-
     const functionUse = async() => {
         const querySnapshot = await getDocs(collection(database, 'All advices'));
         // querySnapshot.forEach((doc) => {
@@ -40,6 +38,7 @@ const AdvicePage = () => {
         pageAdvice.filter( async(ad) => {
             if(ad.id === id){
                 setMun(num + 1)
+                toast('Liked')
                 return(
                 await updateDoc(doc(database, `All advices`, id), {
                     "num_of_likes": number + 1,
@@ -53,11 +52,23 @@ const AdvicePage = () => {
 
     }, [num, showAdviceAdd])
 
+    const copyAdvice = async(id) => {
+        pageAdvice.filter(async(advice) => {
+            if(advice.id === id ){
+                toast('Advice copied')
+                return(
+                    await navigator.clipboard.writeText(advice.textAreaValue)
+                )
+            }
+        })
+    }
+
     return(
         <>
+        <ToastContainer />
             <div className="p-5 md:w-3/5 w-full bg-slate-200" id='mainAdvicepage' ref={modalAdd}>
                 <div className="flex justify-center">
-                    <button className="w-96 py-3 border-2 mb-10 bg-white" onClick={postAdvice}>Post Advice</button>
+                    <button className="w-96 py-3 border-2 mb-10 bg-white font-semibold text-lg" onClick={postAdvice}>Post Advice</button>
                 </div>
                 <div className="flex justify-center bg-white py-5 rounded-t-xl">
                     <div className="w-10/12">
@@ -89,8 +100,8 @@ const AdvicePage = () => {
                                         {num_of_likes}  {num_of_likes > 1 ? 'Likes' : 'Like'}
                                     </div>
                                     <div className="flex flex-row text-white my-5">
-                                        <p className="px-10 py-2 bg-gray-500 mr-4" onClick={() => likeButton(id, num_of_likes)}>Like</p>
-                                        <p className="px-10 py-2 bg-gray-500">Share</p>
+                                        <p className="px-10 py-2 bg-gray-500 mr-4 cursor-pointer" onClick={() => likeButton(id, num_of_likes)}>Like</p>
+                                        <p className="px-10 py-2 bg-gray-500 cursor-pointer" onClick={() => copyAdvice(id)}>Copy Advice</p>
                                     </div>
                                 </div>
                             )
