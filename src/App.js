@@ -1,23 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
+import LogIn from './components/authentication/logInAuth';
+import SidePanel from './components/sidepanel';
+import AdvicePage from './components/advicepage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App md:flex">
+      <div className='bg-black md:basis-60 md:h-screen'>
+          <SidePanel className=''/>
+      </div>
+        <AdvicePage />
+
     </div>
   );
 }
