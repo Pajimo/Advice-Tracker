@@ -79,7 +79,7 @@ const AdvicePage = () => {
     useEffect(() => {
         console.log('yes boss')
         const getSpecificCategory = async() => {
-            if(adviceCategory === 'All categories'){
+            if(adviceCategory === 'All categories' || adviceCategory === ''){
                 functionUse()
             }else{
                 const q = query(collection(database, 'All advices'), where('adviceCategory', '==', adviceCategory));
@@ -99,7 +99,7 @@ const AdvicePage = () => {
         return(
             <>
                 <ToastContainer />
-                <div className="p-5 mx-10 w-full bg-slate-200" id='mainAdvicepage' ref={modalAdd}>
+                <div className="p-5 md:w-3/5 w-full bg-slate-200" id='mainAdvicepage' ref={modalAdd}>
                     <div className="flex justify-center">
                         <button className="w-96 py-3 border-2 mb-10 bg-white font-semibold text-lg" onClick={postAdvice}>Post Advice</button>
                     </div>
@@ -124,7 +124,7 @@ const AdvicePage = () => {
                     </div>
                     <div className="flex justify-center bg-white py-5 rounded-t-xl">
                         <div className="w-10/12">
-                            <div>Check another category</div>
+                            <div>Check another category, No advice in this category</div>
                         </div>
                     </div>
                 </div>
