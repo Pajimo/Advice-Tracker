@@ -77,7 +77,6 @@ const AdvicePage = () => {
     // }
 
     useEffect(() => {
-        console.log('yes boss')
         const getSpecificCategory = async() => {
             if(adviceCategory === 'All categories' || adviceCategory === ''){
                 functionUse()

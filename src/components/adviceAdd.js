@@ -29,7 +29,7 @@ const AdviceAdd = ({setShowAdviceAdd}) => {
         const id = uuidv4()
         if(!textAreaValue){
             toast.error('Write an advice to post')
-        }else if(!adviceCategory){
+        }else if(!adviceCategory || adviceCategory === 'advice category'){
             toast.error('Choose an advice category')
         }
         else{
