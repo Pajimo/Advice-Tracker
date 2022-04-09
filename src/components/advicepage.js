@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { FaRegUser } from "react-icons/fa";
+import { async } from "@firebase/util";
 
 
 const AdvicePage = () => {
@@ -15,6 +16,7 @@ const AdvicePage = () => {
     const [showAdviceAdd, setShowAdviceAdd] = useState(false)
     const [pageAdvice, setPageAdvice] = useState([])
     const [num, setMun ] = useState(0)
+    const [adviceCategory, setAdviceCategory] = useState('')
 
     const postAdvice = () => {
         setShowAdviceAdd(true)
@@ -63,6 +65,75 @@ const AdvicePage = () => {
         })
     }
 
+    // const getSpecificCategory = async(setCategory) => {
+    //     console.log(setCategory)
+    //     const querySnapshot = await getDocs(collection(database, 'All advices'), where('adviceCategory', '==', setCategory));
+    //     // querySnapshot.forEach((doc) => {
+    //     //   //console.log(`${doc.id} => ${doc.data()}`);
+    //     //   console.log(doc.data())
+    //     setPageAdvice(querySnapshot.docs.map((doc) =>{
+    //         return { ...doc.data()}
+    //     }))
+    // }
+
+    useEffect(() => {
+        console.log('yes boss')
+        const getSpecificCategory = async() => {
+            if(adviceCategory === 'All categories'){
+                functionUse()
+            }else{
+                const q = query(collection(database, 'All advices'), where('adviceCategory', '==', adviceCategory));
+                const querySnapshot = await getDocs(q);
+                // querySnapshot.forEach((doc) => {
+                //   //console.log(`${doc.id} => ${doc.data()}`);
+                //   console.log(doc.data())
+                setPageAdvice(querySnapshot.docs.map((doc) =>{
+                    return { ...doc.data()}
+                }))
+            }
+        }
+        getSpecificCategory()
+    }, [adviceCategory])
+
+    if(pageAdvice.length === 0){
+        return(
+            <>
+                <ToastContainer />
+                <div className="p-5 mx-10 w-full bg-slate-200" id='mainAdvicepage' ref={modalAdd}>
+                    <div className="flex justify-center">
+                        <button className="w-96 py-3 border-2 mb-10 bg-white font-semibold text-lg" onClick={postAdvice}>Post Advice</button>
+                    </div>
+                    <div className="mb-5">
+                        <select onChange={(e) => {
+                            setAdviceCategory(e.target.value)
+                            }}>
+                            <option>All categories</option>
+                            <option>Programming</option>
+                            <option>StartUp</option>
+                            <option>Business</option>
+                            <option>Teaching</option>
+                            <option>Job Search</option>
+                            <option>Life</option>
+                            <option>Health</option>
+                            <option>Workout</option>
+                            <option>Work Life</option>
+                            <option>Child Care</option>
+                            <option>Child Birth</option>
+                            <option>School Life</option>
+                        </select>
+                    </div>
+                    <div className="flex justify-center bg-white py-5 rounded-t-xl">
+                        <div className="w-10/12">
+                            <div>Check another category</div>
+                        </div>
+                    </div>
+                </div>
+
+                {showAdviceAdd ? <AdviceAdd setShowAdviceAdd={setShowAdviceAdd}/> : ''}
+                </>
+        )
+    }
+
     return(
         <>
         <ToastContainer />
@@ -70,13 +141,30 @@ const AdvicePage = () => {
                 <div className="flex justify-center">
                     <button className="w-96 py-3 border-2 mb-10 bg-white font-semibold text-lg" onClick={postAdvice}>Post Advice</button>
                 </div>
+                <div className="mb-5">
+                    <select onChange={(e) => {
+                        setAdviceCategory(e.target.value)
+                        }}>
+                        <option>All categories</option>
+                        <option>Programming</option>
+                        <option>StartUp</option>
+                        <option>Business</option>
+                        <option>Teaching</option>
+                        <option>Job Search</option>
+                        <option>Life</option>
+                        <option>Health</option>
+                        <option>Workout</option>
+                        <option>Work Life</option>
+                        <option>Child Care</option>
+                        <option>Child Birth</option>
+                        <option>School Life</option>
+                    </select>
+                </div>
                 <div className="flex justify-center bg-white py-5 rounded-t-xl">
                     <div className="w-10/12">
                         {pageAdvice ? pageAdvice.map((advice) => {
                             const {id, textAreaValue, adviceCategory, displayName, num_of_likes} = advice
-
                             //num = num_of_likes
-
                             return(
                                 <div key={id} className='border-b-2'>
                                     <div className="my-5 flex flex-row justify-between">
